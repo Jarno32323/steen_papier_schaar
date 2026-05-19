@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Steen Papier Schaar</title>
+
+<!-- hier kan je de css aanpassen . -->
+
+<style>
+body{
+    font-family: Arial;
+    background: linear-gradient(135deg,#ffffff,#cac71b);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    margin:0;
+}
+
+.game{
+    background:rgb(255, 255, 255);
+    padding:40px;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+    text-align:center;
+}
+
+button{
+    padding:15px 20px;
+    margin:10px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:18px;
+    background:#cac71b;
+    color:white;
+}
+
+button:hover{
+    background:#cac71b;
+}
+
+span{
+    font-weight:bold;
+    color:#cac71b;
+}
+</style>
+</head>
+<body>
+
+<div class="game">
+    <h1>Steen Papier Schaar</h1>
+
+    <h2>Jouw keuze: <span id="human">---</span></h2>
+    <h2>Computer keuze: <span id="computer">---</span></h2>
+    <h2 id="result">---</h2>
+
+    <button id="steen">Steen</button>
+    <button id="papier">Papier</button>
+    <button id="schaar">Schaar</button>
+</div>
+
+<script>
+
+// CONST ALTIJD BOVENAAN
+const humanOutput = document.querySelector("#human");
+const computerOutput = document.querySelector("#computer");
+const resultOutput = document.querySelector("#result");
+
+const steenBtn = document.querySelector("#steen");
+const papierBtn = document.querySelector("#papier");
+const schaarBtn = document.querySelector("#schaar");
+
+let humanChoice = "";
+
+// EVENT LISTENERS
+steenBtn.addEventListener("click", function(event){
+    humanChoice = "steen";
+    humanOutput.innerHTML = "Steen";
+    playGame();
+});
+
+papierBtn.addEventListener("click", function(event){
+    humanChoice = "papier";
+    humanOutput.innerHTML = "Papier";
+    playGame();
+});
+
+schaarBtn.addEventListener("click", function(event){
+    humanChoice = "schaar";
+    humanOutput.innerHTML = "Schaar";
+    playGame();
+});
+
+// GAME FUNCTIE
+function playGame(){
+
+    const keuzes = ["steen","papier","schaar"];
+    const computerChoice = keuzes[Math.floor(Math.random()*3)];
+
+    computerOutput.innerHTML = computerChoice;
+
+    if(humanChoice === computerChoice){
+        resultOutput.innerHTML = "Gelijkspel!";
+    }
+    else if(
+        (humanChoice === "steen" && computerChoice === "schaar") ||
+        (humanChoice === "papier" && computerChoice === "steen") ||
+        (humanChoice === "schaar" && computerChoice === "papier")
+    ){
+        resultOutput.innerHTML = "Jij wint!";
+    }
+    else{
+        resultOutput.innerHTML = "Computer wint!";
+    }
+}
+
+</script>
+
+</body>
+</html>
