@@ -1,0 +1,34 @@
+
+<div class="card">
+    <h2>🎉 Eerstvolgende feestdagen</h2>
+    <ul id="holidays"></ul>
+</div>
+
+<ul id="holidays"></ul>
+
+<script>
+console.log("JS werkt");
+
+const holidays = [
+    { name: "Kerstmis", date: "2026-12-25" },
+    { name: "Tweede Kerstdag", date: "2026-12-26" },
+    { name: "Nieuwjaarsdag", date: "2027-01-01" },
+    { name: "Koningsdag", date: "2027-04-27" }
+];
+
+const list = document.querySelector("#holidays");
+const today = new Date();
+
+holidays.forEach(h => {
+    const holidayDate = new Date(h.date);
+
+    if (holidayDate >= today) {
+        const diffDays = Math.ceil((holidayDate - today) / (1000 * 60 * 60 * 24));
+
+        const li = document.createElement("li");
+        li.innerHTML = `${h.name} - ${holidayDate.toLocaleDateString("nl-NL")} (nog ${diffDays} dagen)`;
+
+        list.appendChild(li);
+    }
+});
+</script>
