@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Steen Papier Schaar</title>
+
+<style>
+body{
+    font-family: Arial;
+    background: linear-gradient(135deg,#ffffff,#cac71b);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    margin:0;
+}
+
+.game{
+    background:white;
+    padding:40px;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+    text-align:center;
+}
+
+button{
+    padding:15px 20px;
+    margin:10px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:18px;
+    background:#cac71b;
+    color:white;
+}
+
+button:hover{
+    background:#b8b300;
+}
+
+span{
+    font-weight:bold;
+    color:#cac71b;
+}
+</style>
+</head>
+
+<body>
+
+<div class="game">
+    <h1>Steen Papier Schaar</h1>
+
+    <h2 id="countdown"></h2>
+
+    <h2>Jouw keuze: <span id="human">---</span></h2>
+    <h2>Computer keuze: <span id="computer">---</span></h2>
+    <h2 id="result">---</h2>
+
+    <h3>Score: Jij <span id="hScore">0</span> - Computer <span id="cScore">0</span></h3>
+    <h3>Streak: <span id="streak">0</span> | Best: <span id="best">0</span></h3>
+
+    <button id="steen">Steen</button>
+    <button id="papier">Papier</button>
+    <button id="schaar">Schaar</button>
+</div>
+
+<script>
+
+// ELEMENTEN
+const humanOutput = document.querySelector("#human");
+const computerOutput = document.querySelector("#computer");
+const resultOutput = document.querySelector("#result");
+
+const countdownEl = document.querySelector("#countdown");
+
+const hScoreEl = document.querySelector("#hScore");
+const cScoreEl = document.querySelector("#cScore");
+const streakEl = document.querySelector("#streak");
+const bestEl = document.querySelector("#best");
+
+const steenBtn = document.querySelector("#steen");
+const papierBtn = document.querySelector("#papier");
+const schaarBtn = document.querySelector("#schaar");
+
+// GAME VARIABELEN
+let humanChoice = "";
+
+let humanScore = 0;
+let computerScore = 0;
+
+let streak = 0;
+let bestStreak = 0;
+
+
+// COUNTDOWN FUNCTIE
+function countdown(callback){
+  let time = 3;
+countdownEl.innerHTML = time;
+
+let interval = setInterval(() => {
+    time--;
+
+    if(time > 0){
+        countdownEl.innerHTML = time;
+    } else {
+        clearInterval(interval);
+        countdownEl.innerHTML = "";
+        callback();
+    }
+}, 1000);
+}
+
+
+// GAME LOGICA
+function playGame(){
+
+    const keuzes = ["steen","papier","schaar"];
+    const computerChoice = keuzes[Math.floor(Math.random()*3)];
+
+    computerOutput.innerHTML = computerChoice;
+
+    if(humanChoice === computerChoice){
+        resultOutput.innerHTML = "Gelijkspel! 😐";
+        streak = 0;
+    }
+    else if(
+        (humanChoice === "steen" && computerChoice === "schaar") ||
+        (humanChoice === "papier" && computerChoice === "steen") ||
+        (humanChoice === "schaar" && computerChoice === "papier")
+    ){
+        resultOutput.innerHTML = "Jij wint! 🎉";
+        humanScore++;
+        streak++;
+
+        if(streak > bestStreak){
+            bestStreak = streak;
+        }
+    }
+    else{
+        resultOutput.innerHTML = "Computer wint! 🤖";
+        computerScore++;
+        streak = 0;
+    }
+
+    // UPDATE UI
+    hScoreEl.innerHTML = humanScore;
+    cScoreEl.innerHTML = computerScore;
+    streakEl.innerHTML = streak;
+    bestEl.innerHTML = bestStreak;
+}
+
+
+// KNOPPEN
+steenBtn.addEventListener("click", function(){
+    humanChoice = "steen";
+    humanOutput.innerHTML = "Steen";
+
+    countdown(playGame);
+});
+
+papierBtn.addEventListener("click", function(){
+    humanChoice = "papier";
+    humanOutput.innerHTML = "Papier";
+
+    countdown(playGame);
+});
+
+schaarBtn.addEventListener("click", function(){
+    humanChoice = "schaar";
+    humanOutput.innerHTML = "Schaar";
+
+    countdown(playGame);
+});
+
+</script>
+
+</body>
+</html>
